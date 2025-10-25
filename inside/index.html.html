@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Insider</title>
+    
+    <style>
+        /* --- THE SPY-FI THEME --- */
+
+        /* 1. Global Styles & Fonts */
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+                         "Helvetica Neue", Arial, sans-serif;
+            background-color: #111827; 
+            color: #e5e7eb; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* 2. The Main Content Box */
+        .container {
+            background-color: #1f2937; 
+            padding: 30px 40px;
+            border-radius: 16px;
+            border: 1px solid #374151;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+
+        /* 3. Typography (Text & Titles) */
+        h1 {
+            color: #ffffff;
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #3b82f6; 
+            font-size: 2em;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        /* Specific header for language selection */
+        #language-select-header {
+             color: #9ca3af; /* Softer gray */
+             font-size: 1.5em;
+             margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #9ca3af;
+            margin-bottom: 15px;
+        }
+        
+        .rules-list {
+            text-align: left;
+            line-height: 1.6;
+            color: #d1d5db;
+            padding-left: 25px;
+            font-size: 0.95em;
+        }
+        
+        .rules-list li {
+            margin-bottom: 10px;
+        }
+        
+        #player-list-display {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            min-height: 50px; 
+            background-color: #374151;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: left;
+        }
+        .player-list-item {
+            background-color: #4b5563;
+            color: #e5e7eb;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 5px;
+            display: inline-block; 
+        }
+
+        /* 4. Buttons (Primary) */
+        button {
+            background-color: #3b82f6;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0px) scale(0.98);
+        }
+        
+        button:disabled {
+            background-color: #4b5563;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        #add-player-button {
+            padding: 14px 24px; 
+            margin-left: 10px; 
+            margin-top: 0; 
+            vertical-align: middle; 
+        }
+        
+        /* Language buttons style */
+        .language-button {
+            width: 80%; /* Make buttons wider */
+            margin-bottom: 15px; /* Add space between language buttons */
+        }
+
+
+        /* 5. Inputs (Text Box) */
+        input[type="text"] {
+            padding: 16px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            background-color: #374151;
+            color: #f3f4f6;
+            transition: all 0.2s ease-in-out;
+            vertical-align: middle; 
+        }
+        #new-player-name {
+             width: 60%; 
+        }
+
+
+        input[type="text"]::placeholder {
+            color: #6b7280;
+        }
+
+        input[type="text"]:focus {
+            background-color: #4b5563;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5); 
+        }
+
+        /* 6. Game-Specific Styles */
+
+        .pass-screen-text {
+            font-size: 1.5em; 
+            margin: 20px 0;
+        }
+
+        .player-name {
+            font-size: 2.2em;
+            color: #3b82f6;
+            font-weight: 700;
+        }
+
+        .word-reveal-box {
+            background-color: #111827;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .your-word-is {
+             font-size: 1.2em;
+             color: #9ca3af;
+        }
+
+        .secret-word {
+            font-size: 2.8em;
+            font-weight: 700;
+            color: #f59e0b;
+        }
+
+        .clue-instruction {
+            font-size: 1.2em;
+            color: #d1d5db;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .timer-text {
+            font-size: 4.5em; 
+            font-weight: 700;
+            color: #f59e0b;
+            margin: 20px 0;
+        }
+
+        /* 7. Voting & Reveal Styles */
+
+        #vote-buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .vote-button {
+            background-color: #4b5563;
+            width: 100%;
+            margin: 0;
+        }
+
+        .vote-button:hover {
+            background-color: #6b7280;
+            transform: translateY(-2px);
+            box-shadow: none;
+        }
+
+        #skip-timer-button {
+            background-color: transparent;
+            border: 2px solid #4b5563;
+            color: #9ca3af;
+            font-size: 0.9em;
+            padding: 10px 20px;
+        }
+
+        #skip-timer-button:hover {
+            background-color: #4b5563;
+            color: white;
+            transform: translateY(0);
+        }
+
+        .eliminated-player {
+            font-size: 2.5em;
+            color: #f59e0b;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .player-role {
+            font-size: 3.5em;
+            font-weight: 700;
+            margin: 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .role-innocent {
+            color: #22c55e;
+        }
+
+        .role-spy {
+            color: #ef4444;
+        }
+
+        .final-message {
+            font-size: 2.5em;
+            font-weight: 600;
+            color: #3b82f6;
+        }
+
+        .word-reveal-info {
+            font-size: 1.1em;
+            margin-top: 25px;
+            background-color: #111827;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #374151;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="language-select-screen">
+        <h1>The Insider</h1>
+        <h2 id="language-select-header">Select Language / ഭാഷ തിരഞ്ഞെടുക്കുക</h2>
+        <button class="language-button" id="lang-en-button">English</button>
+        <button class="language-button" id="lang-ml-button">മലയാളം</button>
+    </div>
+
+    <div class="container hidden" id="intro-screen">
+        <h1>The Insider</h1>
+        <h2>How to Play</h2>
+        <ul class="rules-list">
+            <li><strong>The Goal:</strong> The group ("Innocents") must find and eliminate the secret "Insider".</li>
+            <li><strong>The Twist:</strong> Most players get a <strong>Specific Word</strong> (e.g., "Apple"). The <strong>Insider</strong> gets a <strong>General Category</strong> (e.g., "Fruit").</li>
+            <li><strong>Gameplay:</strong>
+                <ol>
+                    <li>Everyone gives one clue about their word for 2 rounds.</li>
+                    <li>The Insider must try to blend in, and the Innocents must try to spot who is being too general.</li>
+                    <li>After the clues, you will have 2 minutes to discuss.</li>
+                    <li>Finally, everyone votes to eliminate one player.</li>
+                </ol>
+            </li>
+            <li><strong>Winning:</strong> If you eliminate the Insider, the Innocents win! If you eliminate an Innocent (or the vote is tied), the Insider wins!</li>
+        </ul>
+        <button id="show-setup-button">Get Started</button>
+    </div>
+
+
+    <div class="container hidden" id="setup-screen">
+        <h1>Player Setup</h1>
+        
+        <div>
+             <label for="new-player-name">Enter Player Name:</label>
+             <input type="text" id="new-player-name" placeholder="Name">
+             <button id="add-player-button">Add</button>
+        </div>
+        
+        <div id="player-list-display">
+            </div>
+
+        <button id="start-game-button" disabled>Start Game (Need 3 players)</button>
+    </div>
+
+    <div class="container hidden" id="assignment-screen">
+        <div id="pass-to-player-view">
+            <p class="pass-screen-text">Pass the phone to:</p>
+            <p class="player-name" id="current-player-name">Alice</p>
+            <button id="show-word-button">Tap to see your word</button>
+        </div>
+        <div class="hidden" id="reveal-word-view">
+            <p class="your-word-is">Your word is:</p>
+            <p class="secret-word" id="player-word">Monopoly</p>
+            <button id="hide-word-button">I've got it! Hide word.</button>
+        </div>
+    </div>
+    
+    <div class="container hidden" id="clue-screen">
+        <h2 id="round-title">Round 1</h2>
+        <p class="clue-instruction">It's your turn:</p>
+        <p class="player-name" id="clue-giver-name">Alice</p>
+        <p class="clue-instruction">Give your clue, then pass the phone.</p>
+        <button id="next-clue-button">Next Player</button>
+    </div>
+    
+    <div class="container hidden" id="discussion-screen">
+        <h2>Discuss!</h2>
+        <p class="clue-instruction">Debate who you think the Insider is.</p>
+        <p class="timer-text" id="timer-display">2:00</p>
+        <p class="clue-instruction">Voting begins when the timer hits zero.</p>
+        <button id="skip-timer-button">Skip to Voting</button>
+    </div>
+    
+    <div class="container hidden" id="voting-screen">
+        <h2>Time to Vote!</h2>
+        <p class="pass-screen-text">Pass the phone to:</p>
+        <p class="player-name" id="voter-name">Alice</p>
+        <p class="clue-instruction">Tap who you vote to eliminate:</p>
+        <div id="vote-buttons-container"></div>
+    </div>
+    
+    <div class="container hidden" id="reveal-screen">
+        <h2>The votes are in...</h2>
+        <p class="clue-instruction">The eliminated player is:</p>
+        <p class="eliminated-player" id="eliminated-player-name">Nobody!</p> 
+        <p class="clue-instruction">...who was...</p>
+        <p class="player-role role-innocent" id="eliminated-player-role">VOTE WAS TIED</p> 
+        </div>
+    
+    <div class="container hidden" id="game-over-screen">
+        <h2>Game Over!</h2>
+        <p class="final-message" id="final-message">The Insider Wins!</p>
+        
+        <div class="word-reveal-info">
+            <p>The Insider was: <strong id="spy-reveal-name"></strong></p>
+            <p>The word was: <strong id="specific-word-reveal"></strong></p>
+            <p>The Insider's word was: <strong id="general-word-reveal"></strong></p>
+        </div>
+        
+        <button id="play-again-button">Play Again</button>
+    </div>
+
+
+    <script>
+        // --- 1. WORD LISTS (SEPARATED BY LANGUAGE) ---
+        const wordListEn = [
+            // English - Food & Drink
+            { general: "Fruit", specific: "Banana" }, { general: "Fruit", specific: "Strawberry" },
+            { general: "Vegetable", specific: "Carrot" }, { general: "Vegetable", specific: "Broccoli" },
+            { general: "Drink", specific: "Coffee" }, { general: "Drink", specific: "Tea" },
+            { general: "Fast Food", specific: "Pizza" }, { general: "Fast Food", specific: "Burger" },
+            { general: "Dessert", specific: "Ice Cream" }, { general: "Dessert", specific: "Cake" },
+            { general: "Breakfast Food", specific: "Cereal" }, { general: "Breakfast Food", specific: "Pancake" },
+            { general: "Spice", specific: "Pepper" }, { general: "Spice", specific: "Cinnamon" },
+            { general: "Candy", specific: "Chocolate" }, { general: "Candy", specific: "Gummy Bear" },
+            { general: "Soda", specific: "Coca-Cola" }, { general: "Soda", specific: "Sprite" },
+            { general: "Condiment", specific: "Ketchup" },
+            // English - Animals
+            { general: "Animal", specific: "Elephant" }, { general: "Animal", specific: "Lion" },
+            { general: "Pet", specific: "Dog" }, { general: "Pet", specific: "Cat" },
+            { general: "Farm Animal", specific: "Cow" }, { general: "Farm Animal", specific: "Chicken" },
+            { general: "Bird", specific: "Penguin" }, { general: "Bird", specific: "Eagle" },
+            { general: "Insect", specific: "Ant" }, { general: "Insect", specific: "Butterfly" },
+            { general: "Fish", specific: "Shark" }, { general: "Fish", specific: "Goldfish" },
+            { general: "Reptile", specific: "Snake" }, { general: "Reptile", specific: "Turtle" },
+            { general: "Mythical Creature", specific: "Dragon" },
+            // English - Places
+            { general: "Country", specific: "Japan" }, { general: "Country", specific: "Brazil" },
+            { general: "City", specific: "Paris" }, { general: "City", specific: "New York" },
+            { general: "Continent", specific: "Africa" }, { general: "Continent", specific: "Asia" },
+            { general: "Planet", specific: "Mars" }, { general: "Planet", specific: "Jupiter" },
+            { general: "Tourist Attraction", specific: "Eiffel Tower" }, { general: "Tourist Attraction", specific: "Great Wall of China" },
+            { general: "Room in a House", specific: "Kitchen" }, { general: "Room in a House", specific: "Bedroom" },
+            { general: "Building", specific: "Hospital" }, { general: "Building", specific: "School" },
+            // English - Objects
+            { general: "Furniture", specific: "Chair" }, { general: "Furniture", specific: "Table" },
+            { general: "Tool", specific: "Hammer" }, { general: "Tool", specific: "Screwdriver" },
+            { general: "Clothing", specific: "Hat" }, { general: "Clothing", specific: "Shirt" },
+            { general: "App", specific: "TikTok" }, { general: "App", specific: "Instagram" },
+            { general: "Website", specific: "Google" }, { general: "Website", specific: "YouTube" },
+            { general: "Vehicle", specific: "Bicycle" }, { general: "Vehicle", specific: "Car" },
+            { general: "Musical Instrument", specific: "Guitar" }, { general: "Musical Instrument", specific: "Piano" },
+            { general: "Weapon", specific: "Sword" }, { general: "Weapon", specific: "Bow and Arrow" },
+            { general: "Toy", specific: "Lego" }, { general: "Toy", specific: "Doll" },
+            { general: "Appliance", specific: "Microwave" }, { general: "Appliance", specific: "Refrigerator" },
+            { general: "School Supply", specific: "Pencil" }, { general: "School Supply", specific: "Notebook" },
+            { general: "Container", specific: "Box" },
+            // English - Concepts & Media
+            { general: "Movie", specific: "Titanic" }, { general: "Movie", specific: "Avatar" },
+            { general: "Board Game", specific: "Monopoly" }, { general: "Board Game", specific: "Chess" },
+            { general: "Video Game", specific: "Minecraft" }, { general: "Video Game", specific: "Fortnite" },
+            { general: "Job", specific: "Doctor" }, { general: "Job", specific: "Teacher" },
+            { general: "Sport", specific: "Soccer" }, { general: "Sport", specific: "Basketball" },
+            { general: "Holiday", specific: "Christmas" }, { general: "Holiday", specific: "Halloween" },
+            { general: "Emotion", specific: "Happiness" }, { general: "Emotion", specific: "Sadness" },
+            { general: "Superhero", specific: "Batman" }, { general: "Superhero", specific: "Spider-Man" },
+            { general: "Musician", specific: "Taylor Swift" }, { general: "Musician", specific: "Ed Sheeran" },
+            { general: "Book Series", specific: "Harry Potter" }, { general: "Book Series", specific: "Lord of the Rings" },
+            { general: "TV Show", specific: "Friends" }, { general: "TV Show", specific: "Stranger Things" },
+            { general: "Company", specific: "Apple" }, { general: "Company", specific: "Amazon" },
+            { general: "Language", specific: "Spanish" }, { general: "Language", specific: "French" },
+            { general: "Genre", specific: "Comedy" }, { general: "Genre", specific: "Sci-Fi" },
+            // English - Nature
+            { general: "Weather", specific: "Rain" }, { general: "Weather", specific: "Snow" },
+            { general: "Tree", specific: "Oak" }, { general: "Tree", specific: "Pine" },
+            { general: "Flower", specific: "Rose" }, { general: "Flower", specific: "Sunflower" },
+            { general: "Body Part", specific: "Hand" }, { general: "Body Part", specific: "Eye" },
+            { general: "Color", specific: "Blue" }, { general: "Color", specific: "Red" },
+            { general: "Natural Disaster", specific: "Earthquake" }, { general: "Natural Disaster", specific: "Hurricane" },
+            { general: "Shape", specific: "Circle" }, { general: "Metal", specific: "Gold" }
+        ];
+        
+        const wordListMl = [
+             // ഭക്ഷണ സാധനങ്ങൾ (Food Items)
+            { general: "പഴം (Fruit)", specific: "വാഴപ്പഴം (Banana)" }, { general: "പഴം (Fruit)", specific: "ചക്കപ്പഴം (Jackfruit)" },
+            { general: "പച്ചക്കറി (Vegetable)", specific: "തക്കാളി (Tomato)" }, { general: "പച്ചക്കറി (Vegetable)", specific: "വെണ്ടയ്ക്ക (Okra)" },
+            { general: "പലഹാരം (Snack)", specific: "ഉഴുന്നുവട (Uzhunnuvada)" }, { general: "പലഹാരം (Snack)", specific: "ഇലയട (Ilayada)" },
+            { general: "പാനീയം (Drink)", specific: "ചായ (Tea)" }, { general: "പാനീയം (Drink)", specific: "കരിക്ക് (Tender Coconut)" },
+            { general: "മീൻ (Fish)", specific: "മത്തി (Sardine)" }, { general: "മീൻ (Fish)", specific: "അയല (Mackerel)" },
+            // സ്ഥലങ്ങൾ (Places)
+            { general: "ജില്ല (District)", specific: "കൊല്ലം (Kollam)" }, { general: "ജില്ല (District)", specific: "എറണാകുളം (Ernakulam)" },
+            { general: "നഗരം (City)", specific: "തിരുവനന്തപുരം (Thiruvananthapuram)" }, { general: "നഗരം (City)", specific: "കോഴിക്കോട് (Kozhikode)" },
+            { general: "വിനോദസഞ്ചാര കേന്ദ്രം (Tourist Spot)", specific: "മൂന്നാർ (Munnar)" }, { general: "വിനോദസഞ്ചാര കേന്ദ്രം (Tourist Spot)", specific: "കോവളം (Kovalam)" },
+            { general: "കെട്ടിടം (Building)", specific: "സ്കൂൾ (School)" }, { general: "കെട്ടിടം (Building)", specific: "ആശുപത്രി (Hospital)" },
+            // മൃഗങ്ങളും പക്ഷികളും (Animals & Birds)
+            { general: "മൃഗം (Animal)", specific: "ആന (Elephant)" }, { general: "മൃഗം (Animal)", specific: "പൂച്ച (Cat)" },
+            { general: "വളർത്തുമൃഗം (Pet)", specific: "നായ (Dog)" }, { general: "വളർത്തുമൃഗം (Pet)", specific: "ആട് (Goat)" },
+            { general: "പക്ഷി (Bird)", specific: "തത്ത (Parrot)" }, { general: "പക്ഷി (Bird)", specific: "കാക്ക (Crow)" },
+            { general: "പ്രാണി (Insect)", specific: "ഉറുമ്പ് (Ant)" }, { general: "പ്രാണി (Insect)", specific: "തുമ്പി (Dragonfly)" },
+            // വസ്തുക്കൾ (Objects)
+            { general: "വാഹനം (Vehicle)", specific: "ഓട്ടോറിക്ഷ (Autorickshaw)" }, { general: "വാഹനം (Vehicle)", specific: "ബസ് (Bus)" },
+            { general: "ഫർണിച്ചർ (Furniture)", specific: "കസേര (Chair)" }, { general: "ഫർണിച്ചർ (Furniture)", specific: "മേശ (Table)" },
+            { general: "പാത്രം (Utensil)", specific: "ചട്ടി (Pot)" }, { general: "പാത്രം (Utensil)", specific: "ഗ്ലാസ് (Glass)" },
+            { general: "ഉപകരണം (Tool)", specific: "ചുറ്റിക (Hammer)" }, { general: "ഉപകരണം (Tool)", specific: "കത്തി (Knife)" },
+            { general: "വസ്ത്രം (Clothing)", specific: "സാരി (Sari)" }, { general: "വസ്ത്രം (Clothing)", specific: "മുണ്ട് (Mundu)" },
+            { general: "പൂവ് (Flower)", specific: "ചെമ്പരത്തി (Hibiscus)" }, { general: "പൂവ് (Flower)", specific: "റോസ് (Rose)" },
+            // സിനിമ / കല (Cinema / Art)
+            { general: "നടൻ (Actor)", specific: "മോഹൻലാൽ (Mohanlal)" }, { general: "നടൻ (Actor)", specific: "മമ്മൂട്ടി (Mammootty)" },
+            { general: "നടി (Actress)", specific: "മഞ്ജു വാര്യർ (Manju Warrier)" }, { general: "നടി (Actress)", specific: "ശോഭന (Shobana)" },
+            { general: "സിനിമ (Movie)", specific: "ദൃശ്യം (Drishyam)" }, { general: "സിനിമ (Movie)", specific: "മണിച്ചിത്രത്താഴ് (Manichithrathazhu)" },
+            { general: "സംഗീതോപകരണം (Musical Instrument)", specific: "ചെണ്ട (Chenda)" }, { general: "സംഗീതോപകരണം (Musical Instrument)", specific: "വയലിൻ (Violin)" },{ general: "പഴം (Fruit)", specific: "വാഴപ്പഴം (Banana)" }, 
+    { general: "പഴം (Fruit)", specific: "ചക്കപ്പഴം (Jackfruit)" },
+    { general: "പച്ചക്കറി (Vegetable)", specific: "തക്കാളി (Tomato)" }, 
+    { general: "പച്ചക്കറി (Vegetable)", specific: "വെണ്ടയ്ക്ക (Okra)" },
+    { general: "പലഹാരം (Snack)", specific: "ഉഴുന്നുവട (Uzhunnuvada)" }, 
+    { general: "പലഹാരം (Snack)", specific: "ഇലയട (Ilayada)" },
+    { general: "പാനീയം (Drink)", specific: "ചായ (Tea)" }, 
+    { general: "പാനീയം (Drink)", specific: "കരിക്ക് (Tender Coconut)" },
+    { general: "മീൻ (Fish)", specific: "മത്തി (Sardine)" }, 
+    { general: "മീൻ (Fish)", specific: "അയല (Mackerel)" },
+    { general: "അരിഭക്ഷണം (Rice Dish)", specific: "ബിരിയാണി (Biriyani)" }, 
+    { general: "അരിഭക്ഷണം (Rice Dish)", specific: "പുട്ട് (Puttu)" },
+    { general: "കറി (Curry)", specific: "സാമ്പാർ (Sambar)" }, 
+    { general: "കറി (Curry)", specific: "മീൻ കറി (Fish Curry)" },
+    { general: "മധുരം (Sweet)", specific: "പായസം (Payasam)" }, 
+    { general: "മധുരം (Sweet)", specific: "ലഡു (Laddu)" },
+    { general: "എണ്ണക്കടി (Fried Snack)", specific: "പരിപ്പുവട (Parippuvada)" }, 
+    { general: "എണ്ണക്കടി (Fried Snack)", specific: "ബജി (Bajji)" },
+    // സ്ഥലങ്ങൾ (Places)
+    { general: "ജില്ല (District)", specific: "കൊല്ലം (Kollam)" }, 
+    { general: "ജില്ല (District)", specific: "എറണാകുളം (Ernakulam)" },
+    { general: "ജില്ല (District)", specific: "പാലക്കാട് (Palakkad)" }, 
+    { general: "ജില്ല (District)", specific: "കോഴിക്കോട് (Kozhikode)" },
+    { general: "നഗരം (City)", specific: "തിരുവനന്തപുരം (Thiruvananthapuram)" }, 
+    { general: "നഗരം (City)", specific: "കോഴിക്കോട് (Kozhikode)" }, // Repeated General for variety
+    { general: "വിനോദസഞ്ചാര കേന്ദ്രം (Tourist Spot)", specific: "മൂന്നാർ (Munnar)" }, 
+    { general: "വിനോദസഞ്ചാര കേന്ദ്രം (Tourist Spot)", specific: "കോവളം (Kovalam)" },
+    { general: "കെട്ടിടം (Building)", specific: "സ്കൂൾ (School)" }, 
+    { general: "കെട്ടിടം (Building)", specific: "ആശുപത്രി (Hospital)" },
+    { general: "നദി (River)", specific: "പെരിയാർ (Periyar)" }, 
+    { general: "നദി (River)", specific: "ഭാരതപ്പുഴ (Bharathappuzha)" },
+    { general: "ബീച്ച് (Beach)", specific: "ശംഖുമുഖം (Shanghumukham)" }, 
+    { general: "ബീച്ച് (Beach)", specific: "ചെറായി (Cherai)" },
+    { general: "ആരാധനാലയം (Place of Worship)", specific: "പള്ളി (Church/Mosque)" }, 
+    { general: "ആരാധനാലയം (Place of Worship)", specific: "അമ്പലം (Temple)" },
+    // മൃഗങ്ങളും പക്ഷികളും (Animals & Birds)
+    { general: "മൃഗം (Animal)", specific: "ആന (Elephant)" }, 
+    { general: "മൃഗം (Animal)", specific: "പൂച്ച (Cat)" },
+    { general: "മൃഗം (Animal)", specific: "കടുവ (Tiger)" }, 
+    { general: "മൃഗം (Animal)", specific: "കുരങ്ങൻ (Monkey)" },
+    { general: "വളർത്തുമൃഗം (Pet)", specific: "നായ (Dog)" }, 
+    { general: "വളർത്തുമൃഗം (Pet)", specific: "ആട് (Goat)" },
+    { general: "പക്ഷി (Bird)", specific: "തത്ത (Parrot)" }, 
+    { general: "പക്ഷി (Bird)", specific: "കാക്ക (Crow)" },
+    { general: "പക്ഷി (Bird)", specific: "മയിൽ (Peacock)" }, 
+    { general: "പക്ഷി (Bird)", specific: "പ്രാവ് (Pigeon)" },
+    { general: "പ്രാണി (Insect)", specific: "ഉറുമ്പ് (Ant)" }, 
+    { general: "പ്രാണി (Insect)", specific: "തുമ്പി (Dragonfly)" },
+    { general: "ജലജീവി (Aquatic Animal)", specific: "ആമ (Tortoise)" },
+    // വസ്തുക്കൾ (Objects)
+    { general: "വാഹനം (Vehicle)", specific: "ഓട്ടോറിക്ഷ (Autorickshaw)" }, 
+    { general: "വാഹനം (Vehicle)", specific: "ബസ് (Bus)" },
+    { general: "വാഹനം (Vehicle)", specific: "സൈക്കിൾ (Cycle)" }, 
+    { general: "വാഹനം (Vehicle)", specific: "കാർ (Car)" },
+    { general: "ഫർണിച്ചർ (Furniture)", specific: "കസേര (Chair)" }, 
+    { general: "ഫർണിച്ചർ (Furniture)", specific: "മേശ (Table)" },
+    { general: "പാത്രം (Utensil)", specific: "ചട്ടി (Pot)" }, 
+    { general: "പാത്രം (Utensil)", specific: "ഗ്ലാസ് (Glass)" },
+    { general: "അടുക്കള ഉപകരണം (Kitchen Utensil)", specific: "കൈൽ (Ladle)" }, 
+    { general: "അടുക്കള ഉപകരണം (Kitchen Utensil)", specific: "അമ്മി (Grinding Stone)" },
+    { general: "ഉപകരണം (Tool)", specific: "ചുറ്റിക (Hammer)" }, 
+    { general: "ഉപകരണം (Tool)", specific: "കത്തി (Knife)" },
+    { general: "വസ്ത്രം (Clothing)", specific: "സാരി (Sari)" }, 
+    { general: "വസ്ത്രം (Clothing)", specific: "മുണ്ട് (Mundu)" },
+    { general: "വസ്ത്രം (Clothing)", specific: "ഷർട്ട് (Shirt)" },
+    { general: "പൂവ് (Flower)", specific: "ചെമ്പരത്തി (Hibiscus)" }, 
+    { general: "പൂവ് (Flower)", specific: "റോസ് (Rose)" },
+    { general: "പൂവ് (Flower)", specific: "മുല്ല (Jasmine)" }, 
+    { general: "പൂവ് (Flower)", specific: "താമര (Lotus)" },
+    { general: "ആഭരണം (Jewellery)", specific: "മാല (Necklace)" }, 
+    { general: "ആഭരണം (Jewellery)", specific: "വള (Bangle)" },
+    { general: "നിത്യോപയോഗ സാധനം (Daily Use Item)", specific: "കുട (Umbrella)" }, 
+    { general: "നിത്യോപയോഗ സാധനം (Daily Use Item)", specific: "ചീപ്പ് (Comb)" },
+    // കല / സാഹിത്യം (Art / Literature)
+    { general: "കലാരൂപം (Art Form)", specific: "കഥകളി (Kathakali)" }, 
+    { general: "കലാരൂപം (Art Form)", specific: "തിരുവാതിര (Thiruvathira)" },
+    { general: "സംവിധായകൻ (Director)", specific: "പ്രിയദർശൻ (Priyadarshan)" },
+    { general: "എഴുത്തുകാരൻ (Writer)", specific: "ബഷീർ (Basheer)" },
+    { general: "ഗായകൻ (Singer)", specific: "യേശുദാസ് (Yesudas)" },
+    { general: "ഗായിക (Singer)", specific: "ചിത്ര (Chithra)" },
+    { general: "നടൻ (Actor)", specific: "മോഹൻലാൽ (Mohanlal)" }, 
+    { general: "നടൻ (Actor)", specific: "മമ്മൂട്ടി (Mammootty)" },
+    { general: "നടി (Actress)", specific: "മഞ്ജു വാര്യർ (Manju Warrier)" }, 
+    { general: "നടി (Actress)", specific: "ശോഭന (Shobana)" },
+    { general: "സിനിമ (Movie)", specific: "ദൃശ്യം (Drishyam)" }, 
+    { general: "സിനിമ (Movie)", specific: "മണിച്ചിത്രത്താഴ് (Manichithrathazhu)" },
+    { general: "സംഗീതോപകരണം (Musical Instrument)", specific: "ചെണ്ട (Chenda)" }, 
+    { general: "സംഗീതോപകരണം (Musical Instrument)", specific: "വയലിൻ (Violin)" },
+    // മറ്റുള്ളവ (Others)
+    { general: "നിറം (Color)", specific: "ചുവപ്പ് (Red)" }, 
+    { general: "നിറം (Color)", specific: "പച്ച (Green)" },
+    { general: "ബന്ധം (Relationship)", specific: "അമ്മ (Mother)" }, 
+    { general: "ബന്ധം (Relationship)", specific: "അച്ഛൻ (Father)" },
+    { general: "വികാരം (Emotion)", specific: "സന്തോഷം (Happiness)" }, 
+    { general: "വികാരം (Emotion)", specific: "ദേഷ്യം (Anger)" },
+    { general: "ആഘോഷം (Festival)", specific: "ഓണം (Onam)" }, 
+    { general: "ആഘോഷം (Festival)", specific: "ക്രിസ്തുമസ് (Christmas)" }
+        ];
+
+        // --- 2. GAME STATE ---
+        let gameState = {
+            players: [],          
+            wordSet: {},          
+            spy: null,            
+            currentPlayerIndex: 0, 
+            clueTurnIndex: 0,      
+            roundNumber: 1,
+            timerInterval: null,   
+            timeLeft: 120, 
+            votes: {},             
+            votingPlayerIndex: 0,
+            playerNamesEntered: [],
+            selectedLanguage: 'en' // Default to English
+        };
+
+        // --- 3. GETTING OUR HTML ELEMENTS ---
+        const languageSelectScreen = document.getElementById("language-select-screen"); // New
+        const langEnButton = document.getElementById("lang-en-button"); // New
+        const langMlButton = document.getElementById("lang-ml-button"); // New
+        const introScreen = document.getElementById("intro-screen");
+        const showSetupButton = document.getElementById("show-setup-button");
+        const setupScreen = document.getElementById("setup-screen");
+        const newPlayerNameInput = document.getElementById("new-player-name");
+        const addPlayerButton = document.getElementById("add-player-button");
+        const playerListDisplay = document.getElementById("player-list-display");
+        const startGameButton = document.getElementById("start-game-button");
+        const assignmentScreen = document.getElementById("assignment-screen");
+        const passToPlayerView = document.getElementById("pass-to-player-view");
+        const currentPlayerName = document.getElementById("current-player-name");
+        const showWordButton = document.getElementById("show-word-button");
+        const revealWordView = document.getElementById("reveal-word-view");
+        const playerWord = document.getElementById("player-word");
+        const hideWordButton = document.getElementById("hide-word-button");
+        const clueScreen = document.getElementById("clue-screen");
+        const roundTitle = document.getElementById("round-title");
+        const clueGiverName = document.getElementById("clue-giver-name");
+        const nextClueButton = document.getElementById("next-clue-button");
+        const discussionScreen = document.getElementById("discussion-screen");
+        const timerDisplay = document.getElementById("timer-display");
+        const skipTimerButton = document.getElementById("skip-timer-button");
+        const votingScreen = document.getElementById("voting-screen");
+        const voterName = document.getElementById("voter-name");
+        const voteButtonsContainer = document.getElementById("vote-buttons-container");
+        const revealScreen = document.getElementById("reveal-screen");
+        const eliminatedPlayerName = document.getElementById("eliminated-player-name");
+        const eliminatedPlayerRole = document.getElementById("eliminated-player-role");
+        const gameOverScreen = document.getElementById("game-over-screen");
+        const finalMessage = document.getElementById("final-message");
+        const spyRevealName = document.getElementById("spy-reveal-name");
+        const specificWordReveal = document.getElementById("specific-word-reveal");
+        const generalWordReveal = document.getElementById("general-word-reveal");
+        const playAgainButton = document.getElementById("play-again-button");
+
+
+        // --- 4. ADDING EVENT LISTENERS ---
+        langEnButton.addEventListener("click", () => selectLanguage('en')); // New
+        langMlButton.addEventListener("click", () => selectLanguage('ml')); // New
+        showSetupButton.addEventListener("click", showSetupScreen);
+        addPlayerButton.addEventListener("click", addPlayer);
+        newPlayerNameInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); 
+                addPlayer();
+            }
+        });
+        startGameButton.addEventListener("click", startGame);
+        showWordButton.addEventListener("click", showWord);
+        hideWordButton.addEventListener("click", hideWordAndPass);
+        nextClueButton.addEventListener("click", nextClue);
+        skipTimerButton.addEventListener("click", skipTimer);
+        playAgainButton.addEventListener("click", showSetupScreen); // Goes back to setup, not language select
+
+
+        // --- 5. THE FUNCTIONS (THE "BRAINS") ---
+        
+        // --- NEW FUNCTION ---
+        function selectLanguage(lang) {
+            gameState.selectedLanguage = lang;
+            console.log("Language selected:", gameState.selectedLanguage);
+            languageSelectScreen.classList.add("hidden");
+            introScreen.classList.remove("hidden");
+        }
+        // --- END NEW FUNCTION ---
+
+        function showSetupScreen() {
+            languageSelectScreen.classList.add("hidden"); // Ensure language screen is hidden
+            introScreen.classList.add("hidden");
+            gameOverScreen.classList.add("hidden");
+            gameState.playerNamesEntered = []; 
+            playerListDisplay.innerHTML = ""; 
+            newPlayerNameInput.value = ""; 
+            startGameButton.disabled = true; 
+            startGameButton.textContent = "Start Game (Need 3 players)"; 
+            setupScreen.classList.remove("hidden");
+        }
+
+        function addPlayer() {
+            const name = newPlayerNameInput.value.trim();
+            if (name === "") { alert("Please enter a player name."); return; }
+            if (gameState.playerNamesEntered.includes(name)) {
+                 alert(name + " has already been added!");
+                 newPlayerNameInput.value = ""; 
+                 return;
+            }
+            gameState.playerNamesEntered.push(name);
+            const playerElement = document.createElement("span");
+            playerElement.classList.add("player-list-item");
+            playerElement.textContent = name;
+            playerListDisplay.appendChild(playerElement);
+            newPlayerNameInput.value = "";
+            newPlayerNameInput.focus(); 
+            if (gameState.playerNamesEntered.length >= 3) {
+                startGameButton.disabled = false;
+                 startGameButton.textContent = "Start Game";
+            }
+            console.log("Players:", gameState.playerNamesEntered);
+        }
+        
+        function startGame() {
+            const names = gameState.playerNamesEntered;
+            if (names.length < 3) { alert("You need at least 3 players!"); return; }
+
+            const spyIndex = Math.floor(Math.random() * names.length);
+            gameState.spy = names[spyIndex];
+            
+            // --- *** CHOOSE WORD LIST BASED ON LANGUAGE *** ---
+            const currentWordList = (gameState.selectedLanguage === 'ml') ? wordListMl : wordListEn;
+            gameState.wordSet = currentWordList[Math.floor(Math.random() * currentWordList.length)];
+            // --- *** END OF CHANGE *** ---
+            
+            gameState.players = names.map((name, index) => ({
+                name: name,
+                word: (index === spyIndex) ? gameState.wordSet.general : gameState.wordSet.specific,
+                isEliminated: false 
+            }));
+            
+            gameState.currentPlayerIndex = 0;
+            gameState.clueTurnIndex = 0; 
+            gameState.roundNumber = 1;  
+            gameState.timeLeft = 120; 
+            gameState.votes = {}; 
+            gameState.votingPlayerIndex = 0; 
+            
+            if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+
+            console.log("Game State Initialized:", gameState);
+            
+            setupScreen.classList.add("hidden"); 
+            clueScreen.classList.add("hidden");
+            discussionScreen.classList.add("hidden");
+            votingScreen.classList.add("hidden");
+            revealScreen.classList.add("hidden");
+            gameOverScreen.classList.add("hidden");
+            
+            assignmentScreen.classList.remove("hidden");
+            setupAssignmentScreen();
+        }
+        
+        function setupAssignmentScreen() {
+            const player = gameState.players[gameState.currentPlayerIndex];
+            currentPlayerName.textContent = player.name;
+            playerWord.textContent = player.word;
+            passToPlayerView.classList.remove("hidden");
+            revealWordView.classList.add("hidden");
+        }
+
+        function showWord() {
+            passToPlayerView.classList.add("hidden");
+            revealWordView.classList.remove("hidden");
+        }
+        
+        function hideWordAndPass() {
+            gameState.currentPlayerIndex++;
+            if (gameState.currentPlayerIndex < gameState.players.length) {
+                setupAssignmentScreen();
+            } else {
+                console.log("Word assignment complete. Starting Round 1...");
+                assignmentScreen.classList.add("hidden");
+                clueScreen.classList.remove("hidden");
+                startClueRound();
+            }
+        }
+        
+        function startClueRound() {
+            console.log(`Starting Round ${gameState.roundNumber}`);
+            roundTitle.textContent = `Round ${gameState.roundNumber}`;
+            gameState.clueTurnIndex = 0;
+            setupClueTurn();
+        }
+
+        function setupClueTurn() {
+            const player = gameState.players[gameState.clueTurnIndex];
+            clueGiverName.textContent = player.name;
+        }
+
+        function nextClue() {
+            gameState.clueTurnIndex++;
+            if (gameState.clueTurnIndex < gameState.players.length) {
+                setupClueTurn();
+            } else {
+                console.log(`End of Round ${gameState.roundNumber}`);
+                if (gameState.roundNumber < 2) {
+                    gameState.roundNumber++;
+                    startClueRound();
+                } else {
+                    console.log("Both clue rounds complete. Starting discussion...");
+                    clueScreen.classList.add("hidden");
+                    startDiscussion();
+                }
+            }
+        }
+        
+        function startDiscussion() {
+            discussionScreen.classList.remove("hidden");
+            gameState.timeLeft = 120; // Always 2 minutes
+            timerDisplay.textContent = formatTime(gameState.timeLeft);
+            gameState.timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            gameState.timeLeft--;
+            timerDisplay.textContent = formatTime(gameState.timeLeft);
+            if (gameState.timeLeft <= 0) skipTimer();
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            const paddedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds;
+            return `${minutes}:${paddedSeconds}`;
+        }
+        
+        function skipTimer() {
+            clearInterval(gameState.timerInterval);
+            console.log("Discussion time over! Starting vote...");
+            discussionScreen.classList.add("hidden");
+            startVoting();
+        }
+        
+        function startVoting() {
+            console.log("Voting has started.");
+            gameState.votes = {}; 
+            gameState.votingPlayerIndex = 0; 
+            votingScreen.classList.remove("hidden");
+            setupVotingTurn();
+        }
+        
+        function setupVotingTurn() {
+            const voter = gameState.players[gameState.votingPlayerIndex];
+            voterName.textContent = voter.name;
+            voteButtonsContainer.innerHTML = "";
+            gameState.players.forEach(player => {
+                if (player.name !== voter.name) { 
+                    const button = document.createElement("button");
+                    button.textContent = player.name;
+                    button.classList.add("vote-button");
+                    button.addEventListener("click", () => castVote(player.name));
+                    voteButtonsContainer.appendChild(button);
+                }
+            });
+        }
+        
+        function castVote(votedForName) {
+            const voter = gameState.players[gameState.votingPlayerIndex];
+            gameState.votes[voter.name] = votedForName;
+            console.log(`${voter.name} voted for ${votedForName}`);
+            gameState.votingPlayerIndex++;
+            if (gameState.votingPlayerIndex < gameState.players.length) {
+                setupVotingTurn();
+            } else {
+                console.log("Voting complete!");
+                votingScreen.classList.add("hidden");
+                tallyVotes();
+            }
+        }
+        
+        function tallyVotes() {
+            console.log("Tallying votes:", gameState.votes);
+            const voteCounts = {};
+            let maxVotes = 0;
+            
+            gameState.players.forEach(p => { voteCounts[p.name] = 0; });
+
+            for (const voterName in gameState.votes) {
+                 const votedFor = gameState.votes[voterName];
+                 if (voteCounts.hasOwnProperty(votedFor)) {
+                     voteCounts[votedFor]++;
+                 }
+            }
+            console.log("Vote counts:", voteCounts);
+
+            let playersWithMaxVotes = [];
+            for (const playerName in voteCounts) {
+                if (voteCounts[playerName] > maxVotes) {
+                    maxVotes = voteCounts[playerName];
+                    playersWithMaxVotes = [playerName]; 
+                } else if (voteCounts[playerName] === maxVotes && maxVotes > 0) {
+                    playersWithMaxVotes.push(playerName); 
+                }
+            }
+            
+            let innocentsWin = false;
+            let revealText = "";
+            let revealRole = "";
+            let revealClass = "player-role role-innocent"; 
+
+            if (playersWithMaxVotes.length === 1) {
+                const eliminatedName = playersWithMaxVotes[0];
+                revealText = eliminatedName;
+                if (eliminatedName === gameState.spy) {
+                    console.log("Insider eliminated! Innocents win.");
+                    innocentsWin = true;
+                    revealRole = "THE INSIDER";
+                    revealClass = "player-role role-spy";
+                } else {
+                    console.log("Innocent eliminated! Insider wins.");
+                    innocentsWin = false; 
+                    revealRole = "INNOCENT";
+                }
+            } else {
+                console.log("Vote tied or 0-0-0! Insider wins.");
+                innocentsWin = false; 
+                revealText = "Nobody!";
+                revealRole = "VOTE TIED";
+            }
+
+            // Show reveal screen temporarily
+            revealScreen.classList.remove("hidden");
+            eliminatedPlayerName.textContent = revealText;
+            eliminatedPlayerRole.textContent = revealRole;
+            eliminatedPlayerRole.className = revealClass;
+
+            // Go straight to Game Over after delay
+            setTimeout(() => {
+                revealScreen.classList.add("hidden");
+                endGame(innocentsWin); 
+            }, 3000); 
+        }
+
+        function endGame(innocentsWin) {
+            gameOverScreen.classList.remove("hidden");
+            finalMessage.textContent = innocentsWin ? "The Innocents Win!" : "The Insider Wins!";
+            spyRevealName.textContent = gameState.spy;
+            specificWordReveal.textContent = gameState.wordSet.specific;
+            generalWordReveal.textContent = gameState.wordSet.general;
+        }
+
+    </script>
+</body>
+</html>
